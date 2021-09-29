@@ -37,5 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donateTitle"
         app:layout_constraintVertical_bias="0.82"
-        tools:text="@string/app_name" />
+        tools:text="@string/app_name"
+        android:onClick="donateButtonPressed"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
