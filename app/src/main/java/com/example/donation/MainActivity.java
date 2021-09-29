@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void donateButtonPressed(View view){
-        Log.v("Donate", "Donate Pressed");
+        Log.v("Donate", "a");
     }
 
 
