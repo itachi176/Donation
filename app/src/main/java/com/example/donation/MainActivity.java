@@ -1,6 +1,8 @@
 package com.example.donation;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android .widget.TextView;
+import android.widget.RadioGroup;
+import android.widget.NumberPicker;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -16,6 +22,10 @@ import com.google.android.material.snackbar.Snackbar;
 public class MainActivity extends AppCompatActivity {
 
     private Button donateButton;
+    private RadioGroup paymentMethod;
+    private ProgressBar progressBar;
+    private NumberPicker amountPicker;
+    private int totalDonated = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action",
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+               donateButtonPressed(view);
             }
         });
         donateButton = (Button) findViewById(R.id.donateButton);
@@ -36,10 +44,33 @@ public class MainActivity extends AppCompatActivity {
         {
             Log.v("Donate", "Really got the donate button");
         }
+        paymentMethod = (RadioGroup) findViewById(R.id.paymentMethod);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        amountPicker = (NumberPicker) findViewById(R.id.amountPicker);
+        amountPicker.setMinValue(0);
+        amountPicker.setMaxValue(1000);
+        progressBar.setMax(10000);
     }
 
     public void donateButtonPressed(View view){
-        Log.v("Donate", "a");
+
+        int amount = amountPicker.getValue();
+        int radioId = paymentMethod.getCheckedRadioButtonId();
+        String method = "";
+        if (radioId == R.id.PayPal)
+        {
+            method = "PayPal";
+        }
+        else
+        {
+            method = "Direct";
+        }
+        Log.v("Donate", "Donate Pressed! with amount " + amount + ", method: " +
+                method);
+        totalDonated = totalDonated + amount;
+        progressBar.setProgress(totalDonated);
+        Log.v("Donate", "Current total " + totalDonated);
+
     }
 
 
@@ -49,16 +80,23 @@ public class MainActivity extends AppCompatActivity {
 //        return true;
 //    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//    // Handle action bar item clicks here. The action bar will
-//    // automatically handle clicks on the Home/Up button, so long
-//    // as you specify a parent activity in AndroidManifest.xml.
-//            int id = item.getItemId();
-//    //noinspection SimplifiableIfStatement
-//            if (id == R.id.action_settings) {
-//                return true;
-//            }
-//            return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+// Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_donate, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menuReport : startActivity (new Intent(this, report.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
