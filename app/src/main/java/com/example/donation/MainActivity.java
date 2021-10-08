@@ -10,22 +10,28 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android .widget.TextView;
 import android.widget.RadioGroup;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.donation.Base;
+import com.example.donation.R;
+import com.example.donation.report;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Base {
 
     private Button donateButton;
     private RadioGroup paymentMethod;
     private ProgressBar progressBar;
     private NumberPicker amountPicker;
     private int totalDonated = 0;
+    private EditText amountText;
+    private TextView amountTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,27 +53,34 @@ public class MainActivity extends AppCompatActivity {
         paymentMethod = (RadioGroup) findViewById(R.id.paymentMethod);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         amountPicker = (NumberPicker) findViewById(R.id.amountPicker);
+        amountTotal = (TextView) findViewById(R.id.amountTotal);
         amountPicker.setMinValue(0);
         amountPicker.setMaxValue(1000);
         progressBar.setMax(10000);
+        amountTotal.setText("$1");
     }
 
     public void donateButtonPressed(View view){
 
-        int amount = amountPicker.getValue();
-        int radioId = paymentMethod.getCheckedRadioButtonId();
-        String method = "";
-        if (radioId == R.id.PayPal)
+        String method = paymentMethod.getCheckedRadioButtonId() == R.id.PayPal ?
+                "PayPal" : "Direct";
+        int donatedAmount = amountPicker.getValue();
+        if (donatedAmount == 0)
         {
-            method = "PayPal";
+            String text = amountText.getText().toString();
+            if (!text.equals(""))
+                donatedAmount = Integer.parseInt(text);
         }
-        else
+        if (donatedAmount > 0)
         {
-            method = "Direct";
+            newDonation(new Donation(donatedAmount, method));
+            progressBar.setProgress(totalDonated);
+            String totalDonatedStr = "$" + totalDonated;
+            amountTotal.setText(totalDonatedStr);
         }
-        Log.v("Donate", "Donate Pressed! with amount " + amount + ", method: " +
-                method);
-        totalDonated = totalDonated + amount;
+//        Log.v("Donate", "Donate Pressed! with amount " + amount + ", method: " +
+//                method);
+        totalDonated = totalDonated + donatedAmount;
         progressBar.setProgress(totalDonated);
         Log.v("Donate", "Current total " + totalDonated);
 
@@ -101,6 +114,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }
