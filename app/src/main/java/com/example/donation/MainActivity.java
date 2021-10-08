@@ -94,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.menuReport : startActivity (new Intent(this, report.class));
                 break;
+//            case R.id.menuDonation : startActivity (new Intent(this, MainActivity.class));
+//                break;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
