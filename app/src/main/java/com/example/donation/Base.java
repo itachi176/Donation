@@ -55,6 +55,7 @@ public class Base<Donate> extends AppCompatActivity {
         }
         return true;
     }
+    public void reset(MenuItem item) {totalDonated = 0;}
     public void settings(MenuItem item)
     {
         Toast.makeText(this, "Settings Selected", Toast.LENGTH_SHORT).show();

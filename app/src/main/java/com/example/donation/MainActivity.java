@@ -54,10 +54,11 @@ public class MainActivity extends Base {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         amountPicker = (NumberPicker) findViewById(R.id.amountPicker);
         amountTotal = (TextView) findViewById(R.id.amountTotal);
+        amountText = (EditText) findViewById(R.id.editTextTextPersonName);
         amountPicker.setMinValue(0);
         amountPicker.setMaxValue(1000);
         progressBar.setMax(10000);
-        amountTotal.setText("$1");
+        amountTotal.setText("$0");
     }
 
     public void donateButtonPressed(View view){
@@ -107,8 +108,9 @@ public class MainActivity extends Base {
         {
             case R.id.menuReport : startActivity (new Intent(this, report.class));
                 break;
-//            case R.id.menuDonation : startActivity (new Intent(this, MainActivity.class));
-//                break;
+            case R.id.menuReset:
+                totalDonated = 0;
+                break;
 
 
         }
